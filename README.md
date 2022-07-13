@@ -1,2 +1,2 @@
 # go-data-structure
-记的每天打卡
+记得每天打卡
