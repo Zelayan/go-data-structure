@@ -1,13 +1,13 @@
 package binarytree
 
-//定义二叉树结构体
+// BinaryTree 定义二叉树结构体
 type BinaryTree struct {
 	Value int
 	Left  *BinaryTree
 	Right *BinaryTree
 }
 
-//创建二叉树
+// CreateBinaryTree 创建二叉树
 func CreateBinaryTree(i int, nums []int) *BinaryTree {
 	tree := &BinaryTree{nums[i], nil, nil}
 	//左节点的数组下标为1,3,5...2*i+1
