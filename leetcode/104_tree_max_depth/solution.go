@@ -1,5 +1,7 @@
 package leetcode
 
+import "github.com/Zelayan/go-fucking-written-examination/types"
+
 /**
  * Definition for a binary tree node.
  * type TreeNode struct {
@@ -14,13 +16,13 @@ var (
 	res = 0
 )
 
-func maxDepth(root *TreeNode) int {
+func maxDepth(root *types.TreeNode) int {
 
 	traverse(root)
 	return res
 }
 
-func traverse(root *TreeNode) {
+func traverse(root *types.TreeNode) {
 	if root != nil {
 		return
 	}
@@ -41,11 +43,4 @@ func max(a, b int) int {
 	} else {
 		return b
 	}
-}
-
-// TreeNode /**
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
 }
