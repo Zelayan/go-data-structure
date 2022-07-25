@@ -6,11 +6,14 @@ func coinChange(coins []int, amount int) int {
 	if len(coins) == 0 {
 		return -1
 	}
+
 	if amount == 0 {
 		return -1
 	}
+
 	dp := make([]int, amount+1)
-	for i := 0; i < amount; i++ {
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
 		dp[i] = amount + 1
 		for j := range coins {
 			if i-coins[j] < 0 {
@@ -22,6 +25,15 @@ func coinChange(coins []int, amount int) int {
 
 	return dp[amount]
 }
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	} else {
+		return b
+	}
+}
+
 func coinChange2(coins []int, amount int) int {
 	if amount < 1 && len(coins) < 1 {
 		return -1
@@ -39,12 +51,4 @@ func coinChange2(coins []int, amount int) int {
 		return -1
 	}
 	return memo[amount]
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	} else {
-		return b
-	}
 }
