@@ -1,75 +1,47 @@
 package leetcode
 
+// 备忘录模式
+// nums[i] 位置能接多少雨水，取决于它的左边最高，和右边最高中最低的
 func trap(nums []int) int {
-
-	if len(nums) == 1 || len(nums) == 2 {
+	res := 0
+	n := len(nums)
+	// 如果小于3 说明 接不到雨水
+	if n < 3 {
 		return 0
 	}
-	var stack []int
-	max := -1
-	res := 0
+	lMax := []int{nums[0]}
+	rMax := make([]int, n)
+	rMax[n-1] = nums[n-1]
 
-	for i := 0; i < len(nums); i++ {
-		// 当栈里面没有元素时， 如果元素不为0，直接入栈
-		if len(stack) == 0 {
-			if nums[i] != 0 {
-				stack = append(stack, nums[i])
-				max = nums[i]
-			}
-		} else if len(stack) == 1 { // 如果栈里面有一个元素，如果当前元素大于 栈顶元素，直接进行替换，
-			if nums[i] > stack[len(stack)-1] {
-				stack = []int{nums[i]}
-				max = nums[i]
-			} else {
-				// 如果小于，直接入栈
-				stack = append(stack, nums[i])
-			}
-		} else {
-			// 如果当前元素大于栈顶元素
-			if nums[i] > stack[len(stack)-1] {
-				// 如果当前元素大于栈低元素，需要进行计算面积
-				if nums[i] >= max {
-					stack = append(stack, nums[i])
-					res = res + getArea(stack)
-					stack = []int{nums[i]}
-					max = nums[i]
-				} else {
-					// 负责进行入展
-					stack = append(stack, nums[i])
-				}
-			} else {
-				stack = append(stack, nums[i])
-			}
-		}
+	// 每个位置的左边最大计算出来
+	for i := 1; i < n; i++ {
+		lMax = append(lMax, max(nums[i], lMax[i-1]))
 	}
 
-	if len(stack) >= 3 {
-		res = res + getArea(stack)
+	// 再把每个位置右边最大计算出来
+	for i := n - 2; i > -1; i-- {
+		rMax[i] = max(nums[i], rMax[i+1])
 	}
+
+	// 从1开始，是因为下标为0的接不到雨水
+	for i := 1; i < n; i++ {
+		res = res + min(lMax[i], rMax[i]) - nums[i]
+	}
+
 	return res
 }
 
-func getArea(nums []int) int {
-
-	max := nums[len(nums)-1]
-	right := -1
-	for i := len(nums) - 1; i >= 0; i-- {
-		if nums[i] <= max {
-			right = i
-		}
+func max(a, b int) int {
+	if a >= b {
+		return a
+	} else {
+		return b
 	}
-
-	length := len(nums) - 2
-	height := nums[0]
-	if nums[0] > nums[len(nums)-1] {
-		height = nums[len(nums)-1]
+}
+func min(a, b int) int {
+	if a <= b {
+		return a
+	} else {
+		return b
 	}
-	area := height * length
-	for i := 1; i < len(nums)-1; i++ {
-		area = area - nums[i]
-	}
-	if area < 0 {
-		area = 0
-	}
-	return area
 }
